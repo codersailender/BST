@@ -22,16 +22,35 @@ struct Node {
 
 struct Node* root = NULL;
 
-void printBST(struct Node* node) {
+//Print BST InOrder Traversal
+void inOrder(struct Node* node) {
     if (node==NULL) {
         return;
     }
     
-    printBST(node->left);
+    inOrder(node->left);
     cout << node->key << " ";
-    printBST(node->right);
+    inOrder(node->right);
 }
 
+// Searching in BST
+Node* searchNode(Node* node, int key) {
+    if (node==NULL) {
+        return NULL;
+    }
+    
+    if (node->key ==  key) {
+        return node;
+    } else {
+        if (node->key > key) {
+            return searchNode(node->left, key);
+        } else {
+            return searchNode(node->right, key);
+        }
+    }
+}
+
+// Delete Whole Tree
 void deleteBST(struct Node* node) {
     if (node == NULL) {
         return;
@@ -41,12 +60,14 @@ void deleteBST(struct Node* node) {
     delete node;
 }
 
+//Creating new Node.
 struct Node* getNode(int key) {
     struct Node* node =  new Node();
     node->key = key;
     return node;
 }
 
+//Get successor for deleting any node
 Node* getNextMinValue(Node* node) {
     if (node->right != NULL) {
         return getNextMinValue(node->right);
@@ -55,6 +76,7 @@ Node* getNextMinValue(Node* node) {
     }
 }
 
+//Delete any node having given key value.
 Node* deleteNode(Node* node, int key) {
     if (node == NULL) {
         return node;
@@ -83,6 +105,7 @@ Node* deleteNode(Node* node, int key) {
     return node;
 }
 
+//Insert new node in the tree.
 Node* insertNode(Node* node, int key) {
     if (node == NULL) {
         node =  getNode(key);
@@ -105,19 +128,25 @@ int main(int argc, const char * argv[]) {
     }
     
     cout<<endl<<endl;
-    printBST(root);
+    inOrder(root);
     
     root = deleteNode(root, 77);
     cout<<endl<<endl;
-    printBST(root);
+    inOrder(root);
     
     root = deleteNode(root, 10);
     cout<<endl<<endl;
-    printBST(root);
+    inOrder(root);
     
     root = deleteNode(root, 34);
     cout<<endl<<endl;
-    printBST(root);
+    inOrder(root);
+    
+    if (NULL != searchNode(root, 23)) {
+        cout<<"Found the node";
+    } else {
+        cout<<"Node not found";
+    }
     
     deleteBST(root);
     root = NULL;
